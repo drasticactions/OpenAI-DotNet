@@ -20,6 +20,11 @@ namespace OpenAI
         /// <inheritdoc />
         internal CompletionEndpoint(OpenAIClient api) : base(api) { }
 
+        public string GetFineModelEndpoint()
+        {
+            return $"{Api.BaseUrl}completions";
+        }
+
         /// <inheritdoc />
         protected override string GetEndpoint(Engine engine = null)
         {
@@ -70,6 +75,7 @@ namespace OpenAI
             int? logProbabilities = null,
             bool? echo = null,
             string[] stopSequences = null,
+            string model = null,
             Engine engine = null
             )
         {
@@ -84,7 +90,8 @@ namespace OpenAI
                 frequencyPenalty,
                 logProbabilities,
                 echo,
-                stopSequences);
+                stopSequences,
+                model);
 
             return await CreateCompletionAsync(request, engine);
         }
@@ -103,7 +110,7 @@ namespace OpenAI
         {
             completionRequest.Stream = false;
             var jsonContent = JsonSerializer.Serialize(completionRequest, Api.JsonSerializationOptions);
-            var response = await Api.Client.PostAsync(GetEndpoint(engine), jsonContent.ToJsonStringContent());
+            var response = await Api.Client.PostAsync(string.IsNullOrEmpty(completionRequest.Model) ? GetEndpoint(engine) : GetFineModelEndpoint(), jsonContent.ToJsonStringContent());
 
             if (response.IsSuccessStatusCode)
             {
@@ -165,6 +172,7 @@ namespace OpenAI
             int? logProbabilities = null,
             bool? echo = null,
             string[] stopSequences = null,
+            string model = null,
             Engine engine = null
             )
         {
@@ -179,7 +187,8 @@ namespace OpenAI
                 frequencyPenalty,
                 logProbabilities,
                 echo,
-                stopSequences);
+                stopSequences,
+                model);
 
             await StreamCompletionAsync(request, resultHandler, engine);
         }
@@ -199,7 +208,7 @@ namespace OpenAI
         {
             completionRequest.Stream = true;
             var jsonContent = JsonSerializer.Serialize(completionRequest, new JsonSerializerOptions { IgnoreNullValues = true });
-            using var request = new HttpRequestMessage(HttpMethod.Post, GetEndpoint(engine))
+            using var request = new HttpRequestMessage(HttpMethod.Post, string.IsNullOrEmpty(completionRequest.Model) ? GetEndpoint(engine) : GetFineModelEndpoint())
             {
                 Content = jsonContent.ToJsonStringContent()
             };
@@ -280,6 +289,7 @@ namespace OpenAI
             int? logProbabilities = null,
             bool? echo = null,
             string[] stopSequences = null,
+            string model = null,
             Engine engine = null
             )
         {
@@ -294,7 +304,8 @@ namespace OpenAI
                 frequencyPenalty,
                 logProbabilities,
                 echo,
-                stopSequences);
+                stopSequences,
+                model);
 
             return StreamCompletionEnumerableAsync(request, engine);
         }
@@ -315,7 +326,7 @@ namespace OpenAI
         {
             completionRequest.Stream = true;
             var jsonContent = JsonSerializer.Serialize(completionRequest, new JsonSerializerOptions { IgnoreNullValues = true });
-            using var request = new HttpRequestMessage(HttpMethod.Post, GetEndpoint(engine))
+            using var request = new HttpRequestMessage(HttpMethod.Post, string.IsNullOrEmpty(completionRequest.Model) ? GetEndpoint(engine) : GetFineModelEndpoint())
             {
                 Content = jsonContent.ToJsonStringContent()
             };

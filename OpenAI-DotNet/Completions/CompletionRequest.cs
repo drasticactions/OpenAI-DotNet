@@ -117,6 +117,12 @@ namespace OpenAI
         public string[] StopSequences { get; set; }
 
         /// <summary>
+        /// Include a fine-tuned model to be used to aid your prompt.
+        /// </summary>
+        [JsonPropertyName("model")]
+        public string Model { get; set; }
+
+        /// <summary>
         /// The stop sequence where the API will stop generating further tokens. The returned text will not contain the stop sequence.
         /// For convenience, if you are only requesting a single stop sequence, set it here
         /// </summary>
@@ -178,6 +184,7 @@ namespace OpenAI
             LogProbabilities = basedOn.LogProbabilities ?? DefaultCompletionRequestArgs?.LogProbabilities;
             Echo = basedOn.Echo ?? DefaultCompletionRequestArgs?.Echo;
             StopSequences = basedOn.StopSequences ?? DefaultCompletionRequestArgs?.StopSequences;
+            Model = basedOn.Model ?? DefaultCompletionRequestArgs?.Model;
         }
 
         /// <summary>
@@ -216,7 +223,8 @@ namespace OpenAI
             double? frequencyPenalty = null,
             int? logProbabilities = null,
             bool? echo = null,
-            string[] stopSequences = null)
+            string[] stopSequences = null,
+            string model = null)
         {
             if (prompt != null)
             {
@@ -240,6 +248,7 @@ namespace OpenAI
             LogProbabilities = logProbabilities ?? DefaultCompletionRequestArgs?.LogProbabilities;
             Echo = echo ?? DefaultCompletionRequestArgs?.Echo;
             StopSequences = stopSequences ?? DefaultCompletionRequestArgs?.StopSequences;
+            Model = model ?? DefaultCompletionRequestArgs?.Model;
         }
     }
 }
