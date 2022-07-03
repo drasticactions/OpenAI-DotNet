@@ -202,6 +202,7 @@ namespace OpenAI
             StopSequences = basedOn.StopSequences ?? DefaultCompletionRequestArgs?.StopSequences;
             LogitBias = basedOn.LogitBias ?? DefaultCompletionRequestArgs?.LogitBias;
             BestOf = basedOn.BestOf ?? DefaultCompletionRequestArgs?.BestOf;
+            Model = basedOn.Model ?? DefaultCompletionRequestArgs?.Model;
         }
 
         /// <summary>
@@ -244,7 +245,8 @@ namespace OpenAI
             bool? echo = null,
             string[] stopSequences = null,
             Dictionary<string, double> logitBias = null,
-            int? bestOf = null)
+            int? bestOf = null,
+            string model = null)
         {
             if (prompt != null)
             {
@@ -270,6 +272,7 @@ namespace OpenAI
             StopSequences = stopSequences ?? DefaultCompletionRequestArgs?.StopSequences;
             LogitBias = logitBias ?? DefaultCompletionRequestArgs?.LogitBias;
             BestOf = bestOf ?? DefaultCompletionRequestArgs?.BestOf;
+            Model = model ?? DefaultCompletionRequestArgs?.Model;
         }
     }
 }

@@ -91,6 +91,8 @@ namespace OpenAI
                 logProbabilities,
                 echo,
                 stopSequences,
+                null,
+                null,
                 model);
 
             return await CreateCompletionAsync(request, engine);
@@ -188,6 +190,8 @@ namespace OpenAI
                 logProbabilities,
                 echo,
                 stopSequences,
+                null,
+                null,
                 model);
 
             await StreamCompletionAsync(request, resultHandler, engine);
@@ -305,6 +309,8 @@ namespace OpenAI
                 logProbabilities,
                 echo,
                 stopSequences,
+                null,
+                null,
                 model);
 
             return StreamCompletionEnumerableAsync(request, engine);
